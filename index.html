@@ -297,7 +297,7 @@
       width: 0%;
     }
     .processing-bar-fill.running {
-      animation: fillBar 1.4s cubic-bezier(0.4,0,0.6,1) forwards;
+      animation: fillBar 2.5s cubic-bezier(0.4,0,0.6,1) forwards;
     }
     @keyframes fillBar { to { width: 100%; } }
 
@@ -922,8 +922,8 @@
       <!-- Pay per query -->
       <div class="pricing-card">
         <div class="pricing-tier">Pay per query</div>
-        <div class="pricing-price">From €49</div>
-        <div class="pricing-price-sub">per query, priced by artwork value</div>
+        <div class="pricing-price">Priced by artwork value</div>
+        <div class="pricing-price-sub">One query, one report. No commitment.</div>
         <div class="pricing-divider"></div>
         <ul class="pricing-features">
           <li>Full auction house ranking report</li>
@@ -931,67 +931,39 @@
           <li>Comparable sales analysis</li>
           <li>No subscription required</li>
         </ul>
-        <div class="pricing-bracket-table">
-          <div class="bracket-row">
-            <span>Under €5k</span>
-            <span class="bracket-price">€49</span>
-          </div>
-          <div class="bracket-row">
-            <span>€5k – €25k</span>
-            <span class="bracket-price">€149</span>
-          </div>
-          <div class="bracket-row">
-            <span>€25k – €100k</span>
-            <span class="bracket-price">€349</span>
-          </div>
-          <div class="bracket-row">
-            <span>€100k – €500k</span>
-            <span class="bracket-price">€749</span>
-          </div>
-          <div class="bracket-row">
-            <span>€500k – €2M</span>
-            <span class="bracket-price">€1,499</span>
-          </div>
-          <div class="bracket-row">
-            <span>€2M+</span>
-            <span class="bracket-price">€2,999</span>
-          </div>
-        </div>
       </div>
 
       <!-- Subscription -->
       <div class="pricing-card featured">
         <div class="pricing-tier">Subscription</div>
         <div class="pricing-price">From €350<span style="font-size:1rem;font-weight:400">/mo</span></div>
-        <div class="pricing-price-sub">Standard: 5 queries/month up to €100k<br>Professional (€900/mo): 20 queries up to €500k</div>
+        <div class="pricing-price-sub">For regular users who need ongoing access.</div>
         <div class="pricing-divider"></div>
         <ul class="pricing-features">
           <li>Everything in pay-per-query</li>
-          <li>15% discount on higher-value queries</li>
+          <li>Discounted query rates</li>
           <li>Priority processing</li>
           <li>Usage dashboard</li>
-          <li class="muted">Higher-value works: standard rate −15%</li>
         </ul>
       </div>
 
       <!-- Enterprise -->
       <div class="pricing-card">
         <div class="pricing-tier">Enterprise</div>
-        <div class="pricing-price">Custom</div>
-        <div class="pricing-price-sub">For wealth managers, family offices, and advisory firms</div>
+        <div class="pricing-price">Custom pricing</div>
+        <div class="pricing-price-sub">For wealth managers, family offices, and advisory firms.</div>
         <div class="pricing-divider"></div>
         <ul class="pricing-features">
           <li>Unlimited queries, all artwork values</li>
           <li>API access</li>
           <li>Dedicated account manager</li>
-          <li>Custom reporting</li>
-          <li>SLA and data agreements</li>
+          <li>Custom reporting &amp; SLA</li>
         </ul>
       </div>
 
     </div>
 
-    <p class="pricing-note">Subscription plans include queries on artworks within the stated value range. Higher-value works are billed at the standard query rate with a 15% subscriber discount.</p>
+    <p class="pricing-note">Contact us for detailed pricing and founding client rates. &nbsp;<a href="mailto:wouter@whazzart.com" style="color:var(--vermillion);font-weight:600;text-decoration:none;">wouter@whazzart.com</a></p>
 
   </div>
 </section>
@@ -1038,7 +1010,7 @@
       <div class="footer-col-body">
         <a href="mailto:wouter@whazzart.com">wouter@whazzart.com</a><br>
         KVK: [invullen]<br>
-        [Registered address]
+        Praetoriumstraat 14, Nijmegen
       </div>
     </div>
 
@@ -1106,7 +1078,7 @@
   const bars     = document.querySelectorAll('.bar-fill');
 
   let step = 0;
-  const durations = [1500, 1500, 3000]; // ms per step
+  const durations = [3500, 2800, 6000]; // ms per step
 
   function showPanel(name) {
     Object.values(panels).forEach(p => p.classList.remove('visible'));
