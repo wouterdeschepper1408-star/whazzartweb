@@ -3,316 +3,1141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Whazzart — Coming Soon</title>
-  <meta name="description" content="Whazzart — Auction intelligence for serious sellers. Know exactly where your painting is worth the most.">
-  <meta property="og:title" content="Whazzart — Coming Soon">
-  <meta property="og:description" content="Auction intelligence for serious sellers.">
+  <title>Whazzart — Auction Intelligence</title>
+  <meta name="description" content="Whazzart uses historical transaction data to find the auction house that will actually achieve the highest hammer price for your specific artwork.">
+  <meta property="og:title" content="Whazzart — Auction Intelligence">
+  <meta property="og:description" content="The best auction house isn't always the obvious one.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://whazzart.com">
-  <!-- Favicon: WA mark in vermillion on cream -->
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 74 64'%3E%3Crect width='74' height='64' rx='12' fill='%23F5F0EB'/%3E%3Cpath d='M4 8 L18 54 L32 8 L46 54 L60 8 L74 54' stroke='%23E84430' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3Cpath d='M50 38 L70 38' stroke='%23E84430' stroke-width='4' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --cream:      #F5F0EB;
-      --cream-card: #FAF8F5;
-      --light:      #E0DAD3;
-      --vermillion: #E84430;
-      --dark:       #1C1C1A;
-      --mid:        #6B6660;
+      --cream:       #F5F0EB;
+      --cream-card:  #FAF8F5;
+      --cream-dark:  #EDE7DF;
+      --light:       #E0DAD3;
+      --vermillion:  #E84430;
+      --verm-dim:    rgba(232,68,48,0.12);
+      --dark:        #1C1C1A;
+      --mid:         #6B6660;
+      --success:     #2D7A4F;
     }
 
-    html, body {
-      height: 100%;
+    html { font-size: 16px; scroll-behavior: smooth; }
+
+    body {
       font-family: 'Barlow', sans-serif;
       background: var(--cream);
       color: var(--dark);
     }
 
-    body {
-      display: grid;
-      grid-template-rows: 1fr auto;
-      min-height: 100vh;
-      padding: 2.5rem;
+    /* ── NAV ───────────────────────────────────────────────── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.4rem 3rem;
+      border-bottom: 1px solid var(--light);
     }
 
-    /* ── Centre content ── */
-    main {
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-logo svg { width: 54px; height: auto; }
+
+    .logo-path {
+      stroke-dasharray: 1200;
+      stroke-dashoffset: 1200;
+      animation: draw 1.8s cubic-bezier(.4,0,.2,1) 0.3s forwards;
+    }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    .nav-wordmark {
+      font-size: 0.66rem;
+      font-weight: 700;
+      letter-spacing: 0.46em;
+      text-transform: uppercase;
+      color: var(--dark);
+    }
+
+    .nav-right {
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--mid);
+      text-transform: uppercase;
+    }
+
+    /* ── SHARED ────────────────────────────────────────────── */
+    .label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--vermillion);
+    }
+
+    .section-rule {
+      width: 28px;
+      height: 2px;
+      background: var(--vermillion);
+      margin-bottom: 1.4rem;
+    }
+
+    /* ── HERO ──────────────────────────────────────────────── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 5rem 3rem 5rem;
+    }
+
+    .hero-text { max-width: 520px; }
+
+    .hero-label {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--vermillion);
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1.4s forwards;
+    }
+
+    h1 {
+      font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -0.025em;
+      color: var(--dark);
+      margin-bottom: 1.4rem;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1.55s forwards;
+    }
+
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--mid);
+      max-width: 440px;
+      opacity: 0;
+      animation: fadeUp 0.6s ease 1.7s forwards;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── DEMO DEVICE ───────────────────────────────────────── */
+    .demo-device {
+      background: var(--cream-card);
+      border: 1px solid var(--light);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(28,28,26,0.1);
+      opacity: 0;
+      animation: fadeUp 0.7s ease 1.9s forwards;
+      min-height: 460px;
+      position: relative;
+    }
+
+    .demo-bar {
+      background: var(--cream-dark);
+      border-bottom: 1px solid var(--light);
+      padding: 0.65rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+    }
+
+    .demo-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--light);
+    }
+
+    .demo-url {
+      flex: 1;
+      background: var(--cream);
+      border: 1px solid var(--light);
+      border-radius: 3px;
+      padding: 0.22rem 0.7rem;
+      font-size: 0.65rem;
+      color: var(--mid);
+      letter-spacing: 0.02em;
+    }
+
+    /* Panels */
+    .demo-panel {
+      position: absolute;
+      inset: 41px 0 0 0;
+      padding: 1.6rem;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .demo-panel.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* spacer so device has height */
+    .demo-spacer { height: 420px; }
+
+    /* Input panel */
+    .input-panel-inner {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 1.2rem;
+      align-items: start;
+    }
+
+    .demo-painting-img {
+      width: 100px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 3px;
+      border: 1px solid var(--light);
+      display: block;
+    }
+
+    .demo-fields { display: flex; flex-direction: column; gap: 0.55rem; }
+
+    .demo-field-label {
+      font-size: 0.58rem;
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 0.1rem;
+    }
+
+    .demo-field-value {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--dark);
+      background: var(--cream);
+      border: 1px solid var(--light);
+      border-radius: 2px;
+      padding: 0.32rem 0.6rem;
+    }
+
+    .demo-field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .demo-submit-btn {
+      margin-top: 0.8rem;
+      width: 100%;
+      padding: 0.6rem;
+      background: var(--vermillion);
+      color: #fff;
+      border: none;
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+
+    /* Processing panel */
+    .processing-inner {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      gap: 0;
-      padding: 3rem 1rem;
+      height: 100%;
+      gap: 1.4rem;
     }
 
-    /* ── Logo ── */
-    .logo-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 3.2rem;
+    .processing-logo svg { width: 60px; }
+    .processing-logo .logo-path { stroke-dashoffset: 0; animation: none; }
+
+    .processing-pulse { animation: pulse 1.8s ease-in-out infinite; }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.55; transform: scale(0.95); }
     }
 
-    .logo-wrap svg {
-      width: 160px;
-      height: auto;
-      margin-bottom: 1.3rem;
-    }
-
-    .wordmark {
-      font-size: 0.68rem;
-      font-weight: 700;
-      letter-spacing: 0.52em;
-      text-transform: uppercase;
-      color: var(--dark);
-    }
-
-    /* draw-on animation */
-    .logo-path {
-      stroke-dasharray: 1200;
-      stroke-dashoffset: 1200;
-      animation: draw 1.8s cubic-bezier(.4,0,.2,1) 0.4s forwards;
-    }
-    @keyframes draw { to { stroke-dashoffset: 0; } }
-
-    /* ── Divider ── */
-    .rule {
-      width: 32px;
-      height: 2px;
-      background: var(--vermillion);
-      margin: 0 auto 2.4rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 1.6s forwards;
-    }
-
-    /* ── Headline ── */
-    h1 {
-      font-size: clamp(2rem, 5vw, 3.4rem);
-      font-weight: 300;
-      letter-spacing: -0.02em;
-      line-height: 1.2;
-      color: var(--dark);
-      max-width: 560px;
-      margin-bottom: 1.2rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 1.7s forwards;
-    }
-    h1 strong { font-weight: 800; }
-
-    /* ── Sub ── */
-    .sub {
-      font-size: 0.95rem;
+    .processing-text {
+      font-size: 0.75rem;
       color: var(--mid);
-      line-height: 1.7;
-      max-width: 400px;
-      margin-bottom: 3rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 1.85s forwards;
+      letter-spacing: 0.08em;
+      text-align: center;
     }
 
-    /* ── Email form ── */
-    .notify-form {
-      display: flex;
-      gap: 0;
-      width: 100%;
-      max-width: 400px;
-      border: 1px solid var(--light);
-      border-radius: 2px;
+    .processing-bar-wrap {
+      width: 160px;
+      height: 2px;
+      background: var(--light);
+      border-radius: 1px;
       overflow: hidden;
-      background: var(--cream-card);
-      opacity: 0;
-      animation: fadeUp 0.7s ease 2s forwards;
-      transition: box-shadow 0.25s;
     }
-    .notify-form:focus-within {
-      box-shadow: 0 0 0 3px rgba(232,68,48,0.1);
-      border-color: var(--vermillion);
-    }
-
-    .notify-input {
-      flex: 1;
-      padding: 0.85rem 1rem;
-      background: transparent;
-      border: none;
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.9rem;
-      color: var(--dark);
-      outline: none;
-    }
-    .notify-input::placeholder { color: #B5ADA5; }
-
-    .notify-btn {
-      padding: 0.85rem 1.3rem;
+    .processing-bar-fill {
+      height: 100%;
       background: var(--vermillion);
-      border: none;
-      font-family: 'Barlow', sans-serif;
-      font-size: 0.7rem;
+      border-radius: 1px;
+      width: 0%;
+    }
+    .processing-bar-fill.running {
+      animation: fillBar 1.4s cubic-bezier(0.4,0,0.6,1) forwards;
+    }
+    @keyframes fillBar { to { width: 100%; } }
+
+    /* Report panel */
+    .report-inner { display: flex; flex-direction: column; gap: 0.9rem; }
+
+    .report-top-rec {
+      background: var(--dark);
+      color: #fff;
+      border-radius: 3px;
+      padding: 0.8rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .rec-label {
+      font-size: 0.55rem;
       font-weight: 700;
       letter-spacing: 0.18em;
       text-transform: uppercase;
+      opacity: 0.55;
+      margin-bottom: 0.2rem;
+    }
+
+    .rec-house {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .rec-right { text-align: right; }
+
+    .rec-confidence {
+      display: inline-block;
+      background: var(--vermillion);
       color: #fff;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 0.18rem 0.5rem;
+      border-radius: 2px;
+      margin-bottom: 0.3rem;
+    }
+
+    .rec-range {
+      font-size: 0.65rem;
+      opacity: 0.7;
+      letter-spacing: 0.02em;
+    }
+
+    /* Bar chart */
+    .chart-rows { display: flex; flex-direction: column; gap: 0.5rem; }
+
+    .chart-row { display: flex; flex-direction: column; gap: 0.18rem; }
+
+    .chart-row-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .chart-house {
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--dark);
+    }
+    .chart-house.winner { color: var(--vermillion); font-weight: 700; }
+
+    .chart-price {
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+    .chart-price.winner { color: var(--vermillion); }
+
+    .bar-track {
+      height: 6px;
+      background: var(--light);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      background: var(--cream-dark);
+      width: 0%;
+      transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
+    }
+    .bar-fill.winner-bar { background: var(--vermillion); }
+    .bar-fill.animate { width: var(--target-w); }
+
+    .report-callout {
+      background: var(--verm-dim);
+      border-left: 2px solid var(--vermillion);
+      border-radius: 0 2px 2px 0;
+      padding: 0.55rem 0.75rem;
+      font-size: 0.68rem;
+      color: var(--dark);
+      line-height: 1.5;
+      font-weight: 500;
+    }
+
+    .report-footnote {
+      font-size: 0.6rem;
+      color: var(--mid);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── PRICING ───────────────────────────────────────────── */
+    .pricing {
+      border-top: 1px solid var(--light);
+      padding: 5rem 3rem;
+    }
+
+    .pricing-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+    }
+
+    .pricing-header {
+      margin-bottom: 3rem;
+    }
+
+    .pricing-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .pricing-sub {
+      font-size: 0.9rem;
+      color: var(--mid);
+      line-height: 1.6;
+    }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--light);
+      border: 1px solid var(--light);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 1.2rem;
+    }
+
+    .pricing-card {
+      background: var(--cream-card);
+      padding: 2.2rem 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .pricing-card.featured { background: var(--cream); }
+
+    .pricing-tier {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 0.8rem;
+    }
+
+    .pricing-price {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--dark);
+      letter-spacing: -0.02em;
+      margin-bottom: 0.3rem;
+    }
+
+    .pricing-price-sub {
+      font-size: 0.75rem;
+      color: var(--mid);
+      margin-bottom: 1.6rem;
+      line-height: 1.5;
+    }
+
+    .pricing-divider {
+      width: 100%;
+      height: 1px;
+      background: var(--light);
+      margin-bottom: 1.4rem;
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      flex: 1;
+    }
+
+    .pricing-features li {
+      font-size: 0.82rem;
+      color: var(--dark);
+      line-height: 1.5;
+      padding-left: 1rem;
+      position: relative;
+    }
+
+    .pricing-features li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--vermillion);
+      font-weight: 700;
+    }
+
+    .pricing-features li.muted { color: var(--mid); }
+
+    .pricing-bracket-table {
+      margin: 0.8rem 0 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+
+    .bracket-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--mid);
+      padding: 0.2rem 0;
+      border-bottom: 1px solid var(--light);
+    }
+
+    .bracket-row:last-child { border-bottom: none; }
+    .bracket-price { font-weight: 700; color: var(--dark); }
+
+    .pricing-note {
+      font-size: 0.72rem;
+      color: var(--mid);
+      line-height: 1.6;
+      padding: 0.8rem 1rem;
+      background: var(--cream-dark);
+      border-radius: 2px;
+      border-left: 2px solid var(--light);
+    }
+
+    /* ── EARLY ACCESS ──────────────────────────────────────── */
+    .early-access {
+      border-top: 1px solid var(--light);
+      padding: 4rem 3rem;
+    }
+
+    .early-access-inner {
+      max-width: 480px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .early-access-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .early-access-sub {
+      font-size: 0.85rem;
+      color: var(--mid);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+    }
+
+    .access-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .access-input, .access-select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background: var(--cream-card);
+      border: 1px solid var(--light);
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.9rem;
+      color: var(--dark);
+      transition: border-color 0.2s, box-shadow 0.2s;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+
+    .access-input::placeholder { color: #B5ADA5; }
+
+    .access-select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6660' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    .access-select option[value=""] { color: #B5ADA5; }
+
+    .access-input:focus, .access-select:focus {
+      outline: none;
+      border-color: var(--vermillion);
+      box-shadow: 0 0 0 3px rgba(232,68,48,0.08);
+    }
+
+    .access-btn {
+      padding: 0.85rem;
+      background: var(--dark);
+      color: #fff;
+      border: none;
+      border-radius: 2px;
+      font-family: 'Barlow', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
       cursor: pointer;
       transition: background 0.2s;
-      white-space: nowrap;
     }
-    .notify-btn:hover { background: #f25540; }
+    .access-btn:hover { background: #2e2e2c; }
 
-    .notify-note {
-      font-size: 0.7rem;
+    .access-note {
+      font-size: 0.68rem;
       color: var(--mid);
-      letter-spacing: 0.05em;
-      margin-top: 0.85rem;
-      opacity: 0;
-      animation: fadeUp 0.7s ease 2.15s forwards;
+      letter-spacing: 0.04em;
     }
 
-    /* ── Thank you state ── */
-    .thankyou {
+    .access-thankyou {
       display: none;
       font-size: 0.82rem;
       font-weight: 600;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--vermillion);
+      padding: 1rem;
     }
 
-    /* ── Footer ── */
+    /* ── FOOTER ────────────────────────────────────────────── */
     footer {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding-top: 1.5rem;
       border-top: 1px solid var(--light);
-      opacity: 0;
-      animation: fadeUp 0.6s ease 2.4s forwards;
+      padding: 2.5rem 3rem;
+      background: var(--cream-dark);
     }
 
-    .footer-brand {
-      font-size: 0.65rem;
+    .footer-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .footer-wordmark {
+      font-size: 0.62rem;
       font-weight: 700;
-      letter-spacing: 0.36em;
+      letter-spacing: 0.44em;
+      text-transform: uppercase;
+      color: var(--dark);
+      margin-bottom: 0.6rem;
+    }
+
+    .footer-tagline {
+      font-size: 0.75rem;
+      color: var(--mid);
+      line-height: 1.6;
+      max-width: 220px;
+    }
+
+    .footer-col-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--mid);
+      margin-bottom: 0.8rem;
     }
 
-    .footer-right {
+    .footer-col-body {
+      font-size: 0.75rem;
+      color: var(--mid);
+      line-height: 1.8;
+    }
+
+    .footer-col-body a {
+      color: var(--mid);
+      text-decoration: none;
+    }
+    .footer-col-body a:hover { color: var(--dark); }
+
+    .footer-bottom {
+      max-width: 1160px;
+      margin: 1.8rem auto 0;
+      padding-top: 1.4rem;
+      border-top: 1px solid var(--light);
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .footer-copy {
       font-size: 0.7rem;
       color: var(--mid);
-      letter-spacing: 0.04em;
     }
 
-    /* ── Animations ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+    .footer-disclaimer {
+      font-size: 0.68rem;
+      color: var(--mid);
+      max-width: 580px;
+      text-align: right;
+      line-height: 1.5;
     }
 
-    /* ── Responsive ── */
-    @media (max-width: 480px) {
-      body { padding: 1.5rem; }
-      .notify-form { flex-direction: column; }
-      .notify-btn { width: 100%; text-align: center; }
-      footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+    /* ── RESPONSIVE ────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; gap: 2.5rem; padding: 3.5rem 2rem; }
+      .hero-text { max-width: none; }
+      .pricing-grid { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      nav { padding: 1.2rem 1.5rem; }
+      .hero { padding: 2.5rem 1.5rem; }
+      .pricing { padding: 3rem 1.5rem; }
+      .early-access { padding: 3rem 1.5rem; }
+      footer { padding: 2rem 1.5rem; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; }
+      .footer-disclaimer { text-align: left; }
     }
   </style>
 </head>
 <body>
 
-  <main>
+<!-- ── NAV ──────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">
+    <svg viewBox="0 0 222 95" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Whazzart">
+      <path class="logo-path"
+        d="M 4 8 L 46 84 L 88 8 L 130 84 L 172 8 L 214 84"
+        stroke="#E84430" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path class="logo-path"
+        d="M 145 57 L 199 57"
+        stroke="#E84430" stroke-width="3.5" stroke-linecap="round"
+        style="animation-delay:1.3s"/>
+    </svg>
+    <span class="nav-wordmark">W H A Z Z A R T</span>
+  </div>
+  <span class="nav-right">Early Access</span>
+</nav>
 
-    <div class="logo-wrap">
-      <svg viewBox="0 0 222 95" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Whazzart">
-        <path class="logo-path"
-          d="M 4 8 L 46 84 L 88 8 L 130 84 L 172 8 L 214 84"
-          stroke="#E84430" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <path class="logo-path"
-          d="M 145 57 L 199 57"
-          stroke="#E84430" stroke-width="3.5" stroke-linecap="round"
-          style="animation-delay: 1.3s;"/>
-      </svg>
-      <span class="wordmark">W H A Z Z A R T</span>
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<section class="hero">
+
+  <div class="hero-text">
+    <div class="hero-label">Auction Intelligence</div>
+    <h1>The best auction house isn't always the obvious one.</h1>
+    <p class="hero-sub">Whazzart uses historical transaction data to find the auction house that will actually achieve the highest hammer price for your specific artwork, not just the biggest name.</p>
+  </div>
+
+  <!-- Demo device -->
+  <div class="demo-device">
+    <div class="demo-bar">
+      <div class="demo-dot"></div>
+      <div class="demo-dot"></div>
+      <div class="demo-dot"></div>
+      <div class="demo-url">whazzart.com/analyse</div>
+    </div>
+    <div class="demo-spacer"></div>
+
+    <!-- Panel 1: Input -->
+    <div class="demo-panel visible" id="demo-input">
+      <div class="label" style="margin-bottom:0.8rem;">Artwork details</div>
+      <div class="input-panel-inner">
+        <img class="demo-painting-img"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Corot_-_Souvenir_de_Mortefontaine.jpg/300px-Corot_-_Souvenir_de_Mortefontaine.jpg"
+          alt="Corot — Souvenir de Mortefontaine"
+          onerror="this.style.background='var(--cream-dark)';this.removeAttribute('src')">
+        <div class="demo-fields">
+          <div>
+            <div class="demo-field-label">Artist</div>
+            <div class="demo-field-value">J.-B.-C. Corot</div>
+          </div>
+          <div>
+            <div class="demo-field-label">Title</div>
+            <div class="demo-field-value">Paysage du Midi</div>
+          </div>
+          <div class="demo-field-row">
+            <div>
+              <div class="demo-field-label">Year</div>
+              <div class="demo-field-value">1865</div>
+            </div>
+            <div>
+              <div class="demo-field-label">Size</div>
+              <div class="demo-field-value">65 × 81 cm</div>
+            </div>
+          </div>
+          <div>
+            <div class="demo-field-label">Est. value</div>
+            <div class="demo-field-value">€ 1,200,000</div>
+          </div>
+        </div>
+      </div>
+      <button class="demo-submit-btn">Run the analysis →</button>
     </div>
 
-    <div class="rule"></div>
+    <!-- Panel 2: Processing -->
+    <div class="demo-panel" id="demo-processing">
+      <div class="processing-inner">
+        <div class="processing-logo processing-pulse">
+          <svg viewBox="0 0 222 95" fill="none">
+            <path d="M 4 8 L 46 84 L 88 8 L 130 84 L 172 8 L 214 84"
+              stroke="#E84430" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M 145 57 L 199 57"
+              stroke="#E84430" stroke-width="3.5" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="processing-text" id="proc-text">Analyzing 847 comparable sales…</div>
+        <div class="processing-bar-wrap">
+          <div class="processing-bar-fill" id="proc-bar"></div>
+        </div>
+      </div>
+    </div>
 
-    <h1>Auction intelligence<br>for <strong>serious sellers.</strong></h1>
+    <!-- Panel 3: Report -->
+    <div class="demo-panel" id="demo-report">
+      <div class="report-inner">
 
-    <p class="sub">
-      Know exactly which auction house achieves the highest net for your painting
-      and by precisely how much. Launching soon.
-    </p>
+        <div class="report-top-rec">
+          <div>
+            <div class="rec-label">Recommended house</div>
+            <div class="rec-house">Tajan, Paris</div>
+          </div>
+          <div class="rec-right">
+            <div class="rec-confidence">91% match</div>
+            <div class="rec-range">€1,150,000 – €1,420,000</div>
+          </div>
+        </div>
 
-    <form class="notify-form" id="notify-form" onsubmit="handleSubmit(event)" novalidate>
-      <input
-        class="notify-input"
-        id="email-input"
-        type="email"
-        placeholder="Your email address"
-        autocomplete="email"
-        required>
-      <button class="notify-btn" type="submit">Notify me</button>
+        <div class="chart-rows" id="chart-rows">
+          <div class="chart-row">
+            <div class="chart-row-header">
+              <span class="chart-house winner">Tajan, Paris</span>
+              <span class="chart-price winner">€1,285,000</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill winner-bar" style="--target-w:100%"></div>
+            </div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-row-header">
+              <span class="chart-house">Millon, Paris</span>
+              <span class="chart-price">€1,190,000</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="--target-w:92.6%"></div>
+            </div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-row-header">
+              <span class="chart-house">Deburaux & Associés</span>
+              <span class="chart-price">€1,050,000</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="--target-w:81.7%"></div>
+            </div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-row-header">
+              <span class="chart-house">Christie's London</span>
+              <span class="chart-price">€980,000</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="--target-w:76.3%"></div>
+            </div>
+          </div>
+          <div class="chart-row">
+            <div class="chart-row-header">
+              <span class="chart-house">Sotheby's Paris</span>
+              <span class="chart-price">€910,000</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="--target-w:70.8%"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="report-callout">
+          Specialist houses outperform major auction houses for French Barbizon landscapes by <strong>23% on average.</strong>
+        </div>
+
+        <div class="report-footnote">Based on 23 comparable sales of Corot works (2018–2024)</div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ── PRICING ───────────────────────────────────────────────── -->
+<section class="pricing">
+  <div class="pricing-inner">
+
+    <div class="pricing-header">
+      <div class="section-rule"></div>
+      <h2 class="pricing-title">Straightforward pricing</h2>
+      <p class="pricing-sub">Pay per query or subscribe for regular access. Every tier includes the full report.</p>
+    </div>
+
+    <div class="pricing-grid">
+
+      <!-- Pay per query -->
+      <div class="pricing-card">
+        <div class="pricing-tier">Pay per query</div>
+        <div class="pricing-price">From €49</div>
+        <div class="pricing-price-sub">per query, priced by artwork value</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Full auction house ranking report</li>
+          <li>Net-to-seller per house after fees</li>
+          <li>Comparable sales analysis</li>
+          <li>No subscription required</li>
+        </ul>
+        <div class="pricing-bracket-table">
+          <div class="bracket-row">
+            <span>Under €5k</span>
+            <span class="bracket-price">€49</span>
+          </div>
+          <div class="bracket-row">
+            <span>€5k – €25k</span>
+            <span class="bracket-price">€149</span>
+          </div>
+          <div class="bracket-row">
+            <span>€25k – €100k</span>
+            <span class="bracket-price">€349</span>
+          </div>
+          <div class="bracket-row">
+            <span>€100k – €500k</span>
+            <span class="bracket-price">€749</span>
+          </div>
+          <div class="bracket-row">
+            <span>€500k – €2M</span>
+            <span class="bracket-price">€1,499</span>
+          </div>
+          <div class="bracket-row">
+            <span>€2M+</span>
+            <span class="bracket-price">€2,999</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Subscription -->
+      <div class="pricing-card featured">
+        <div class="pricing-tier">Subscription</div>
+        <div class="pricing-price">From €350<span style="font-size:1rem;font-weight:400">/mo</span></div>
+        <div class="pricing-price-sub">Standard: 5 queries/month up to €100k<br>Professional (€900/mo): 20 queries up to €500k</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Everything in pay-per-query</li>
+          <li>15% discount on higher-value queries</li>
+          <li>Priority processing</li>
+          <li>Usage dashboard</li>
+          <li class="muted">Higher-value works: standard rate −15%</li>
+        </ul>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="pricing-card">
+        <div class="pricing-tier">Enterprise</div>
+        <div class="pricing-price">Custom</div>
+        <div class="pricing-price-sub">For wealth managers, family offices, and advisory firms</div>
+        <div class="pricing-divider"></div>
+        <ul class="pricing-features">
+          <li>Unlimited queries, all artwork values</li>
+          <li>API access</li>
+          <li>Dedicated account manager</li>
+          <li>Custom reporting</li>
+          <li>SLA and data agreements</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <p class="pricing-note">Subscription plans include queries on artworks within the stated value range. Higher-value works are billed at the standard query rate with a 15% subscriber discount.</p>
+
+  </div>
+</section>
+
+
+<!-- ── EARLY ACCESS ──────────────────────────────────────────── -->
+<section class="early-access">
+  <div class="early-access-inner">
+    <div class="section-rule" style="margin:0 auto 1.4rem;"></div>
+    <h2 class="early-access-title">Get early access</h2>
+    <p class="early-access-sub">We're onboarding a limited number of users ahead of launch. Leave your details and we'll be in touch.</p>
+
+    <form class="access-form" id="access-form" onsubmit="handleSubmit(event)" novalidate>
+      <input class="access-input" id="email-input" type="email" placeholder="Your email address" autocomplete="email" required>
+      <select class="access-select" id="role-select">
+        <option value="" disabled selected>I am a…</option>
+        <option value="dealer">Art dealer / gallerist</option>
+        <option value="collector">Private collector</option>
+        <option value="estate">Estate / family office</option>
+        <option value="wealth">Wealth manager</option>
+        <option value="advisor">Art advisor / consultant</option>
+        <option value="other">Other</option>
+      </select>
+      <button class="access-btn" type="submit">Request early access</button>
+      <p class="access-note">No spam. We'll only contact you about Whazzart access.</p>
     </form>
 
-    <p class="notify-note" id="notify-note">We'll let you know the moment we go live. No spam, ever.</p>
-    <p class="thankyou" id="thankyou">You're on the list. We'll be in touch.</p>
+    <p class="access-thankyou" id="access-thankyou">You're on the list. We'll be in touch.</p>
+  </div>
+</section>
 
-  </main>
 
-  <footer>
-    <span class="footer-brand">Whazzart</span>
-    <span class="footer-right">© 2026 · Auction Intelligence Platform</span>
-  </footer>
+<!-- ── FOOTER ────────────────────────────────────────────────── -->
+<footer>
+  <div class="footer-inner">
 
-  <script>
-    // ── Formspree endpoint ───────────────────────────────────────
-    // 1. Go to https://formspree.io/register and sign up (free)
-    // 2. Create a new form → paste wouter@whazzart.com as the email
-    // 3. Copy the form ID (looks like "xyzabcde") and replace below
-    const FORMSPREE_ID = 'mjgjojrn';
-    // ─────────────────────────────────────────────────────────────
+    <div class="footer-brand-col">
+      <div class="footer-wordmark">W H A Z Z A R T</div>
+      <p class="footer-tagline">Auction intelligence for serious sellers.</p>
+    </div>
 
-    async function handleSubmit(e) {
-      e.preventDefault();
-      const input = document.getElementById('email-input');
-      const note  = document.getElementById('notify-note');
-      const ty    = document.getElementById('thankyou');
-      const form  = document.getElementById('notify-form');
-      const btn   = form.querySelector('.notify-btn');
+    <div>
+      <div class="footer-col-label">Contact</div>
+      <div class="footer-col-body">
+        <a href="mailto:wouter@whazzart.com">wouter@whazzart.com</a><br>
+        KVK: [invullen]<br>
+        [Registered address]
+      </div>
+    </div>
 
-      if (!input.value || !input.value.includes('@')) {
-        input.style.outline = '2px solid #E84430';
-        return;
-      }
+    <div>
+      <div class="footer-col-label">Legal</div>
+      <div class="footer-col-body">
+        Whazzart is a data analytics platform.<br>
+        Our reports are based on historical auction data and do not constitute financial or investment advice.
+      </div>
+    </div>
 
-      btn.textContent = '···';
-      btn.disabled = true;
+  </div>
 
-      try {
-        if (FORMSPREE_ID !== 'YOUR_FORM_ID') {
-          await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-            body: JSON.stringify({ email: input.value }),
-          });
-        }
-      } catch (_) { /* fail silently — still show confirmation */ }
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Whazzart. All rights reserved.</span>
+    <span class="footer-disclaimer">Reports are based on historical auction data and do not constitute financial or investment advice.</span>
+  </div>
+</footer>
 
-      form.style.opacity = '0';
-      form.style.transition = 'opacity 0.3s ease';
-      note.style.opacity = '0';
-      setTimeout(() => {
-        form.style.display = 'none';
-        note.style.display = 'none';
-        ty.style.display = 'block';
-        ty.style.animation = 'fadeUp 0.5s ease forwards';
-      }, 300);
+
+<script>
+  // ── Formspree ───────────────────────────────────────────────
+  const FORMSPREE_ID = 'mjgjojrn';
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const email  = document.getElementById('email-input');
+    const role   = document.getElementById('role-select');
+    const form   = document.getElementById('access-form');
+    const ty     = document.getElementById('access-thankyou');
+    const btn    = form.querySelector('.access-btn');
+
+    if (!email.value || !email.value.includes('@')) {
+      email.style.borderColor = '#E84430';
+      return;
     }
-  </script>
+
+    btn.textContent = '···';
+    btn.disabled = true;
+
+    try {
+      await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email: email.value, role: role.value }),
+      });
+    } catch (_) {}
+
+    form.style.opacity = '0';
+    form.style.transition = 'opacity 0.3s ease';
+    setTimeout(() => {
+      form.style.display = 'none';
+      ty.style.display = 'block';
+    }, 300);
+  }
+
+  // ── Demo animation ──────────────────────────────────────────
+  const panels = {
+    input:      document.getElementById('demo-input'),
+    processing: document.getElementById('demo-processing'),
+    report:     document.getElementById('demo-report'),
+  };
+
+  const procBar  = document.getElementById('proc-bar');
+  const bars     = document.querySelectorAll('.bar-fill');
+
+  let step = 0;
+  const durations = [1500, 1500, 3000]; // ms per step
+
+  function showPanel(name) {
+    Object.values(panels).forEach(p => p.classList.remove('visible'));
+    panels[name].classList.add('visible');
+  }
+
+  function animateBars() {
+    bars.forEach(b => { b.classList.remove('animate'); void b.offsetWidth; b.classList.add('animate'); });
+  }
+
+  function runStep() {
+    if (step === 0) {
+      showPanel('input');
+    } else if (step === 1) {
+      showPanel('processing');
+      procBar.classList.remove('running');
+      void procBar.offsetWidth;
+      procBar.classList.add('running');
+    } else {
+      showPanel('report');
+      setTimeout(animateBars, 100);
+    }
+
+    const duration = durations[step];
+    step = (step + 1) % 3;
+    setTimeout(runStep, duration);
+  }
+
+  // Start after the device fades in
+  setTimeout(runStep, 2400);
+</script>
 
 </body>
 </html>
