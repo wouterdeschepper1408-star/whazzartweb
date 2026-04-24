@@ -1244,6 +1244,8 @@
       setTimeout(() => {
         phase1.classList.replace('active','done');
         phase2.classList.add('active');
+        procPathW.style.strokeDashoffset = '0';
+        procPathA.style.strokeDashoffset = '0';
         procPathW.classList.replace('draw','drawn');
         procPathA.classList.replace('draw','drawn');
       }, 2200);
