@@ -94,12 +94,12 @@
     /* ── HERO ──────────────────────────────────────────────── */
     .hero {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-      max-width: 1160px;
+      grid-template-columns: 0.8fr 1.35fr;
+      gap: 3.5rem;
+      align-items: start;
+      max-width: 1280px;
       margin: 0 auto;
-      padding: 5rem 3rem 5rem;
+      padding: 4.5rem 3rem 5rem;
     }
 
     .hero-text { max-width: 520px; }
@@ -150,7 +150,7 @@
       box-shadow: 0 20px 60px rgba(28,28,26,0.1);
       opacity: 0;
       animation: fadeUp 0.7s ease 1.9s forwards;
-      min-height: 460px;
+      min-height: 640px;
       position: relative;
     }
 
@@ -196,7 +196,7 @@
     }
 
     /* spacer so device has height */
-    .demo-spacer { height: 420px; }
+    .demo-spacer { height: 600px; }
 
     /* Input panel */
     .input-panel-inner {
@@ -407,6 +407,51 @@
       color: var(--mid);
       letter-spacing: 0.04em;
     }
+
+    /* Two-column body inside report */
+    .report-body-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+
+    .report-right-col { display: flex; flex-direction: column; gap: 0.7rem; }
+
+    .report-summary-label {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--vermillion);
+      margin-bottom: 0.35rem;
+    }
+
+    .report-summary-text {
+      font-size: 0.7rem;
+      line-height: 1.6;
+      color: var(--dark);
+    }
+
+    /* Mini line chart */
+    .mini-chart-label {
+      font-size: 0.56rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--mid);
+      margin-bottom: 0.3rem;
+    }
+
+    .mini-chart-svg { width: 100%; display: block; }
+    .mini-line { stroke: var(--vermillion); stroke-width: 1.5; fill: none; }
+    .mini-area { fill: rgba(232,68,48,0.08); }
+    .mini-axis { stroke: var(--light); stroke-width: 1; }
+    .mini-label {
+      font-family: 'Barlow', sans-serif;
+      font-size: 7px;
+      fill: var(--mid);
+    }
+    .mini-dot-latest { fill: var(--vermillion); }
 
     /* ── PRICING ───────────────────────────────────────────── */
     .pricing {
@@ -782,17 +827,17 @@
       <div class="label" style="margin-bottom:0.8rem;">Artwork details</div>
       <div class="input-panel-inner">
         <img class="demo-painting-img"
-          src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Corot_-_Souvenir_de_Mortefontaine.jpg/300px-Corot_-_Souvenir_de_Mortefontaine.jpg"
-          alt="Corot — Souvenir de Mortefontaine"
+          src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Eug%C3%A8ne_Boudin_-_Beach_Scene_-_Google_Art_Project.jpg/300px-Eug%C3%A8ne_Boudin_-_Beach_Scene_-_Google_Art_Project.jpg"
+          alt="Eugène Boudin — Beach Scene"
           onerror="this.style.background='var(--cream-dark)';this.removeAttribute('src')">
         <div class="demo-fields">
           <div>
             <div class="demo-field-label">Artist</div>
-            <div class="demo-field-value">J.-B.-C. Corot</div>
+            <div class="demo-field-value">Eugène Boudin</div>
           </div>
           <div>
             <div class="demo-field-label">Title</div>
-            <div class="demo-field-value">Paysage du Midi</div>
+            <div class="demo-field-value">Bord de mer, Normandie</div>
           </div>
           <div class="demo-field-row">
             <div>
@@ -806,7 +851,7 @@
           </div>
           <div>
             <div class="demo-field-label">Est. value</div>
-            <div class="demo-field-value">€ 1,200,000</div>
+            <div class="demo-field-value">€ 780,000</div>
           </div>
         </div>
       </div>
@@ -842,63 +887,99 @@
           </div>
           <div class="rec-right">
             <div class="rec-confidence">91% match</div>
-            <div class="rec-range">€1,150,000 – €1,420,000</div>
+            <div class="rec-range">€748,000 – €920,000</div>
           </div>
         </div>
 
-        <div class="chart-rows" id="chart-rows">
-          <div class="chart-row">
-            <div class="chart-row-header">
-              <span class="chart-house winner">Tajan, Paris</span>
-              <span class="chart-price winner">€1,285,000</span>
+        <div class="report-body-grid">
+
+          <!-- Left: bar chart -->
+          <div class="chart-rows" id="chart-rows">
+            <div class="chart-row">
+              <div class="chart-row-header">
+                <span class="chart-house winner">Tajan, Paris</span>
+                <span class="chart-price winner">€835,000</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill winner-bar" style="--target-w:100%"></div>
+              </div>
             </div>
-            <div class="bar-track">
-              <div class="bar-fill winner-bar" style="--target-w:100%"></div>
+            <div class="chart-row">
+              <div class="chart-row-header">
+                <span class="chart-house">Millon, Paris</span>
+                <span class="chart-price">€774,000</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="--target-w:92.7%"></div>
+              </div>
+            </div>
+            <div class="chart-row">
+              <div class="chart-row-header">
+                <span class="chart-house">Deburaux & Associés</span>
+                <span class="chart-price">€683,000</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="--target-w:81.8%"></div>
+              </div>
+            </div>
+            <div class="chart-row">
+              <div class="chart-row-header">
+                <span class="chart-house">Christie's London</span>
+                <span class="chart-price">€637,000</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="--target-w:76.3%"></div>
+              </div>
+            </div>
+            <div class="chart-row">
+              <div class="chart-row-header">
+                <span class="chart-house">Sotheby's Paris</span>
+                <span class="chart-price">€592,000</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill" style="--target-w:70.9%"></div>
+              </div>
             </div>
           </div>
-          <div class="chart-row">
-            <div class="chart-row-header">
-              <span class="chart-house">Millon, Paris</span>
-              <span class="chart-price">€1,190,000</span>
+
+          <!-- Right: summary + line chart -->
+          <div class="report-right-col">
+            <div>
+              <div class="report-summary-label">About this work</div>
+              <p class="report-summary-text">Eugène Boudin (1824–1898) is widely regarded as a direct precursor to Impressionism, celebrated for his luminous coastal scenes and confident plein-air technique. This work, from his mature period, exemplifies the sky drama and tidal atmosphere that drive collector demand. Specialist French houses consistently achieve a 20–30% premium over international majors for Boudin coastal works.</p>
             </div>
-            <div class="bar-track">
-              <div class="bar-fill" style="--target-w:92.6%"></div>
-            </div>
-          </div>
-          <div class="chart-row">
-            <div class="chart-row-header">
-              <span class="chart-house">Deburaux & Associés</span>
-              <span class="chart-price">€1,050,000</span>
-            </div>
-            <div class="bar-track">
-              <div class="bar-fill" style="--target-w:81.7%"></div>
-            </div>
-          </div>
-          <div class="chart-row">
-            <div class="chart-row-header">
-              <span class="chart-house">Christie's London</span>
-              <span class="chart-price">€980,000</span>
-            </div>
-            <div class="bar-track">
-              <div class="bar-fill" style="--target-w:76.3%"></div>
-            </div>
-          </div>
-          <div class="chart-row">
-            <div class="chart-row-header">
-              <span class="chart-house">Sotheby's Paris</span>
-              <span class="chart-price">€910,000</span>
-            </div>
-            <div class="bar-track">
-              <div class="bar-fill" style="--target-w:70.8%"></div>
+            <div>
+              <div class="mini-chart-label">Boudin — avg. hammer price (2010–2024)</div>
+              <!-- Points: 2010=280,2011=315,2012=348,2013=395,2014=428,2015=465,
+                   2016=430,2017=495,2018=545,2019=588,2020=490,2021=625,2022=685,
+                   2023=715,2024=752 (in €k)
+                   viewBox 0 0 280 90 · x=20+i*17.86 · y=85-((v-280)/472)*72 -->
+              <svg class="mini-chart-svg" viewBox="0 0 280 90" xmlns="http://www.w3.org/2000/svg">
+                <line class="mini-axis" x1="20" y1="13" x2="275" y2="13"/>
+                <line class="mini-axis" x1="20" y1="49" x2="275" y2="49"/>
+                <line class="mini-axis" x1="20" y1="85" x2="275" y2="85"/>
+                <text class="mini-label" x="15" y="16" text-anchor="end">€750k</text>
+                <text class="mini-label" x="15" y="52" text-anchor="end">€520k</text>
+                <text class="mini-label" x="15" y="88" text-anchor="end">€280k</text>
+                <polygon class="mini-area" points="20,85 37.9,79.7 55.7,74.7 73.6,67.5 91.4,62.9 109.3,57.6 127.1,62.4 145,52.4 162.9,44.2 180.7,37.4 198.6,52.7 216.4,27.5 234.3,17.1 252.1,12.7 270,7.4 270,85"/>
+                <polyline class="mini-line" points="20,85 37.9,79.7 55.7,74.7 73.6,67.5 91.4,62.9 109.3,57.6 127.1,62.4 145,52.4 162.9,44.2 180.7,37.4 198.6,52.7 216.4,27.5 234.3,17.1 252.1,12.7 270,7.4"/>
+                <circle class="mini-dot-latest" cx="270" cy="7.4" r="3"/>
+                <text class="mini-label" x="20" y="95" text-anchor="middle">2010</text>
+                <text class="mini-label" x="91.4" y="95" text-anchor="middle">2014</text>
+                <text class="mini-label" x="162.9" y="95" text-anchor="middle">2018</text>
+                <text class="mini-label" x="234.3" y="95" text-anchor="middle">2022</text>
+                <text class="mini-label" x="270" y="95" text-anchor="middle">2024</text>
+              </svg>
             </div>
           </div>
+
         </div>
 
         <div class="report-callout">
-          Specialist houses outperform major auction houses for French Barbizon landscapes by <strong>23% on average.</strong>
+          Specialist houses outperform major auction houses for French Impressionist coastal works by <strong>23% on average.</strong>
         </div>
 
-        <div class="report-footnote">Based on 23 comparable sales of Corot works (2018–2024)</div>
+        <div class="report-footnote">Based on 23 comparable sales of Boudin works (2018–2024)</div>
 
       </div>
     </div>
